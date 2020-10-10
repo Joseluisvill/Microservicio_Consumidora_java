@@ -29,6 +29,30 @@
             <p:row>
                 <p:outputLabel value="#{computadoraController.valor}"/>
             </p:row>
+
+        </h:form>
+        
+        <h:form>
+            <h:panelGroup>
+                <p:row>
+                    <p:outputLabel value="Metodos"/>
+                </p:row>
+                <p:row>
+                    <p:commandButton value="Mostar"
+                                     action="#{computadoraController.mostrarcomputadora()}"
+                                     />
+                </p:row>
+                <p:row>
+                    <p:commandButton value="Crear"
+                                     action="#{computadoraController.crearcomputadora()}"
+                                     />
+                </p:row>
+                <p:row>
+                    <p:commandButton value="Actualizar"
+                                     action="#{computadoraController.leerBuenosDias()}"
+                                     />
+                </p:row>
+            </h:panelGroup>
         </h:form>
     </h:body>
 </html>

@@ -15,13 +15,6 @@ package com.jose.consumidora.entity;
         private Double velocidadProcesador;
         private int cantidadRam;
 
-    public Computadora(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Computadora() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
    public String getSerial()
     {
@@ -75,7 +68,9 @@ package com.jose.consumidora.entity;
     public void setCantidadRam(int cantidadRam) {
         this.cantidadRam = cantidadRam;
     }
-
+    public Computadora()
+    {
+    }
     public Computadora(String serial, String marca, String modelo, String marcaProcesador) {
         this.serial = serial;
         this.marca = marca;
@@ -91,8 +86,8 @@ package com.jose.consumidora.entity;
         this.velocidadProcesador = velocidadProcesador;
         this.cantidadRam = cantidadRam;
     }
-    public Computadora(String serial,int cantidadRam)
+    /*public Computadora(String serial,int cantidadRam)
     {
         this(serial,"HP","Panama 2020","",8.0,cantidadRam);
-    }
+    }*/
 }
