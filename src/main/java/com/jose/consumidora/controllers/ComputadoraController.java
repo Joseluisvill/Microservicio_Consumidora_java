@@ -5,12 +5,14 @@
  */
 package com.jose.consumidora.controllers;
 
-import com.jose.consumidora.entity.Computadora;
+import com.jose.computadoraclient.entity.Computadora;
+import com.jose.computadoraclient.services.ComputadoraServices;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.Client;
@@ -30,12 +32,10 @@ import javax.ws.rs.core.Response;
 public class ComputadoraController implements Serializable {
 
     private String valor;
-    final String URL="http://127.0.0.1:8081/clase1/resources/sistemas";
-    private int ejecuciones;
+    private String ejecuciones;
     Computadora computador;
-    
     @Inject
-    ComputadoraFacade computadoraFacade;
+    ComputadoraServices computadoraServices;
     public String getValor() {
         return valor;
     }
@@ -62,10 +62,10 @@ public class ComputadoraController implements Serializable {
     public void init()
     {
         valor="Comienzo";
-        ejecuciones=0;
+        //ejecuciones=0;
         computador=new Computadora();
     }
-    public String leerBuenosDias()
+    /*public String leerBuenosDias()
     {  
         valor= preparar()
                 .path("/saludo")
@@ -76,13 +76,10 @@ public class ComputadoraController implements Serializable {
         ejecuciones++;
         System.out.println("valor"+valor);
         return "";
-    }
+    }*/
     public String leerComputadora()
     {  
-        computador= preparar()
-                .path("/computadora")
-                .request(MediaType.APPLICATION_JSON)
-                .get(Computadora.class);
+        computador= computadoraServices.buscarcomputadora();
         System.out.println("valor"+computador.getModelo());
         return "";
     }
@@ -99,35 +96,54 @@ public class ComputadoraController implements Serializable {
         }
         return "";
     }*/
-    public String crearComputadora()
+    public String buscar()
     {
-        try{
+        //computador=computadoraServices.BusquedaSerial(computador.getSerial());
+        computador= computadoraServices.buscarcomputadora();
         
-            Client client=ClientBuilder.newClient();
-            WebTarget preparo=client.target(URL+"/crearcomputadora");
-            Invocation.Builder invocationBuiler=preparo
-                    .request(MediaType.APPLICATION_JSON);
-            Response respuesta=invocationBuiler
-                    .post(Entity.entity(computador,MediaType.APPLICATION_JSON));
-        }catch(Exception e)
-        {
-            System.out.println("Error");
-        }
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Successful"));
-        return "";
+        return"";
     }
-    public String buscarComputadora()
+    public String crearComputadora()
+    {if(computadoraServices.crearComputadora(computador))
+            {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Se creo Correctamente") );
+            }
+            else
+            {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("NO se creo Correctamente") );
+            }
+            return "";
+    }
+    public String buscarcomputadora()
     {
-        /*computador= preparar()
-                .path("/buscarcomputadora")
+        computador= computadoraServices.buscarcomputadora();
+        /*String id=computador.getSerial().toString();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Marca",  "Your message: " + id) );
+        computador= preparar()
+                .path("/buscarcomputadora/"+id)
                 .request(MediaType.APPLICATION_JSON)
-                .get(Computadora.class);*/
-        System.out.println("valor"+computador.getSerial());
-        //FacesContext context = FacesContext.getCurrentInstance();
-        //context.addMessage(null, new FacesMessage("Marca",  "Your message: " + computador.getMarca()) );
+                .get(Computadora.class);
+        System.out.println("valor"+computador.getSerial());*/
+        
         return "";
     }
+    /*public String buscarcomputadoraquery()
+    {
+        String id=computador.getSerial().toString();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Marca",  "Your message: " + id) );
+        computador= preparar()
+                .path("/computadoraunica")
+                .queryParam("id", id)
+                .request()
+                .get(Computadora.class);
+        System.out.println("valor"+computador.getSerial());
+        
+        return "";
+    }*/
     /*public String mostrarcomputadora()
     {
         computador=preparar()
@@ -150,8 +166,5 @@ public class ComputadoraController implements Serializable {
         return true;
     }
     
-    protected WebTarget preparar()
-    {
-        return ClientBuilder.newClient().target(URL);
-    }
+    
 }

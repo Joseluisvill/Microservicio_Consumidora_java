@@ -25,8 +25,11 @@
             </p:panelGrid>
             <p:commandButton value="Guardar" action="#{computadoraController.crearComputadora()}"
                              update=":formacrear"/>
-            <p:commandButton value="Buscar" action="#{computadoraController.buscarComputadora()}"
-                             update="growl"/>
+            <p:commandButton value="Buscar" action="#{computadoraController.buscarcomputadoraquery()}"
+                             update="formacrear"/>
+            <p:commandButton value="BuscarSerial" action="#{computadoraController.buscar()}"
+                             process="@this"
+                             update="formacrear"/>
         </h:form>
     </h:body>
 </html>
